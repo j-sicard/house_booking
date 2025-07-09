@@ -9,7 +9,7 @@ public interface HouseRepositoryPort {
 
     public House create(House house) throws Exception;
 
-    public List<House> findHouses() throws Exception;
+    public List<House> findHouses();
 
     public void deleteHouseById(Long id) throws Exception;
 

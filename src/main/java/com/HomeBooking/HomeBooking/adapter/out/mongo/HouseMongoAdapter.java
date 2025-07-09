@@ -31,17 +31,27 @@ public class HouseMongoAdapter implements HouseRepositoryPort {
         try {
             return mongoRepository.findAll();
         } catch (MongoException e) {
-            logger.error("Erreur lors de la récupération des maisons", e);
-            throw new TechnicalDatabaseException("Erreur technique lors de la récupération des maisons", e);
+            logger.error("Error retrieving houses", e);
+            throw new TechnicalDatabaseException("Technical error while retrieving houses", e);
         }
     }
 
 
     public void deleteHouseById(Long id){
-        mongoRepository.deleteById(id);
+        try{
+            mongoRepository.deleteById(id);
+        }catch (MongoException e) {
+            logger.error("Error deleting house", e);
+            throw new TechnicalDatabaseException("Technical error while deleting house", e);
+        }
      }
 
-     public Optional<House> findHouseById(Long id) throws Exception{
-        return mongoRepository.findById(id);
-     }
+    public Optional<House> findHouseById(Long id) {
+        try {
+            return mongoRepository.findById(id);
+        } catch (MongoException e) {
+            logger.error("Error retrieving house with id : " + id, e);
+            throw new TechnicalDatabaseException("Technical error while retrieving house with id : " + id, e);
+        }
+    }
 }

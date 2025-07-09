@@ -3,6 +3,7 @@ package com.HomeBooking.HomeBooking.adapter.out.mongo;
 import com.HomeBooking.HomeBooking.domain.model.House;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Profile;
@@ -54,6 +55,7 @@ public class HouseMongoAdapterTest {
     void createData(){
         saveThreeTestHouses();
     }
+
     // *** create *** //
 
     @Test
