@@ -1,5 +1,6 @@
 package com.HomeBooking.HomeBooking.adapter.out.mongo;
 
+import com.HomeBooking.HomeBooking.adapter.out.mongo.document.HouseDocument;
 import com.HomeBooking.HomeBooking.domain.model.House;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,22 +28,22 @@ public class HouseMongoAdapterTest {
     private HouseMongoRepository houseMongoRepository;
 
     public House houseForTest(){
-        House house = new House(1L,"House", "address here", 400.0);
+        House house = new House("1","House", "address here", 400.0);
         return house;
     }
 
-    public List<House> housesForTest() {
-        List<House> houses = new ArrayList<>();
-        houses.add(new House(2L, "House 1", "address 1", 500.0));
-        houses.add(new House(3L, "House 2", "address 2", 600.0));
-        houses.add(new House(4L, "House 3", "address 3", 700.0));
-        return houses;
+    public List<HouseDocument> houseDocumentsForTest() {
+        List<HouseDocument> documents = new ArrayList<>();
+        documents.add(new HouseDocument("2", "House 1", "address 1", 500.0));
+        documents.add(new HouseDocument("3", "House 2", "address 2", 600.0));
+        documents.add(new HouseDocument("4", "House 3", "address 3", 700.0));
+        return documents;
     }
 
-    private void saveThreeTestHouses() {
-        houseMongoRepository.save(housesForTest().get(0));
-        houseMongoRepository.save(housesForTest().get(1));
-        houseMongoRepository.save(housesForTest().get(2));
+    private void saveThreeHouseDocuments() {
+        houseMongoRepository.save(houseDocumentsForTest().get(0));
+        houseMongoRepository.save(houseDocumentsForTest().get(1));
+        houseMongoRepository.save(houseDocumentsForTest().get(2));
     }
 
     @BeforeEach
@@ -53,13 +54,13 @@ public class HouseMongoAdapterTest {
 
     @BeforeEach
     void createData(){
-        saveThreeTestHouses();
+        saveThreeHouseDocuments();
     }
 
     // *** create *** //
 
     @Test
-    void shouldCreateHouseData() throws Exception{
+    void shouldCreateHouseData(){
         int before = houseMongoRepository.findAll().size();
 
         houseMongoAdapter.create(houseForTest());
@@ -68,81 +69,81 @@ public class HouseMongoAdapterTest {
     }
 
     @Test
-    void shouldCreateHouseWithCorrectTitle() throws Exception{
+    void shouldCreateHouseWithCorrectTitle(){
         houseMongoAdapter.create(houseForTest());
 
-        assertTrue(houseMongoRepository.findById(1L).get().getTitle().equals("House"));
+        assertTrue(houseMongoRepository.findById("1").get().getTitle().equals("House"));
     }
 
     @Test
-    void shouldCreateHouseWithCorrectAddress() throws Exception{
+    void shouldCreateHouseWithCorrectAddress(){
         houseMongoAdapter.create(houseForTest());
 
-        assertTrue(houseMongoRepository.findById(1L).get().getAddress().equals("address here"));
+        assertTrue(houseMongoRepository.findById("1").get().getAddress().equals("address here"));
     }
 
     @Test
-    void shouldCreateHouseWithCorrectPrice() throws Exception{
+    void shouldCreateHouseWithCorrectPrice(){
         houseMongoAdapter.create(houseForTest());
 
-        assertTrue(houseMongoRepository.findById(1L).get().getPrice().equals(400.0));
+        assertTrue(houseMongoRepository.findById("1").get().getPrice().equals(400.0));
     }
 
     // *** findHouses *** //
 
     @Test
-    void shouldReturnAllHouses() throws Exception{
+    void shouldReturnAllHouses(){
         assertEquals(3, houseMongoAdapter.findHouses().size());
     }
 
     @Test
-    void shouldReturnHousesWithCorrectTitles() throws Exception {
+    void shouldReturnHousesWithCorrectTitles() {
         assertTrue(houseMongoAdapter.findHouses().stream().map(House::getTitle).toList().containsAll(List.of("House 1", "House 2", "House 3")));
     }
 
     @Test
-    void shouldReturnHousesWithCorrectAddress() throws Exception {
+    void shouldReturnHousesWithCorrectAddress() {
         assertTrue(houseMongoAdapter.findHouses().stream().map(House::getAddress).toList().containsAll(List.of("address 1", "address 2", "address 3")));
     }
 
     @Test
-    void shouldReturnHousesWithCorrectAdPrice() throws Exception {
+    void shouldReturnHousesWithCorrectAdPrice() {
         assertTrue(houseMongoAdapter.findHouses().stream().map(House::getPrice).toList().containsAll(List.of(500.0, 600.0, 700.0)));
     }
 
     // *** deleteHouseById *** //
 
     @Test
-    void shouldIdHouseDeletedCorrectly(){
+    void shouldIdHouseDeletedCorrectly() {
         int houseCountBeforeTest = houseMongoRepository.findAll().size();
 
-        houseMongoAdapter.deleteHouseById(2L);
+        houseMongoAdapter.deleteHouseById("2");
 
         assertTrue(houseCountBeforeTest == houseMongoRepository.findAll().size() + 1);
     }
 
     @Test
-    void shouldDeleteHouseWithCorrectId(){
-        houseMongoAdapter.deleteHouseById(2L);
+    void shouldDeleteHouseWithCorrectId() {
+        houseMongoAdapter.deleteHouseById("2");
 
-        assertFalse(houseMongoRepository.findAll().stream().map(House :: getId).toList().contains(2L));
+        assertFalse(houseMongoRepository.findAll().stream().map(HouseDocument :: getId).toList().contains("2"));
     }
 
     // *** findByHouseId *** //
 
     @Test
-    void shouldReturnCorrectHouseWhenIdExists() throws Exception{
-        assertEquals(2L, houseMongoAdapter.findHouseById(2L).get().getId());
+    void shouldReturnCorrectHouseWhenIdExists() {
+        assertEquals("2", houseMongoAdapter.findHouseById("2").get().getId());
     }
 
     @Test
-    void shouldFindHouseById() throws Exception {
-        assertTrue(houseMongoAdapter.findHouseById(2L).isPresent());
+    void shouldFindHouseById() {
+        assertTrue(houseMongoAdapter.findHouseById("2").isPresent());
     }
 
     @Test
-    void shouldReturnEmptyWhenHouseIdDoesNotExist() throws Exception{
-        Optional<House> result = houseMongoAdapter.findHouseById(99L);
+    void shouldReturnEmptyWhenHouseIdDoesNotExist() {
+        Optional<House> result = houseMongoAdapter.findHouseById("99");
 
         assertTrue(result.isEmpty());
     }

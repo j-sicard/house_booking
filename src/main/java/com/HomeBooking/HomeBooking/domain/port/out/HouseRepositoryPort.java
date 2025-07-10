@@ -7,11 +7,11 @@ import java.util.Optional;
 
 public interface HouseRepositoryPort {
 
-    public House create(House house) throws Exception;
+    public House create(House house);
 
     public List<House> findHouses();
 
-    public void deleteHouseById(Long id) throws Exception;
+    public void deleteHouseById(String id);
 
-    public Optional<House> findHouseById(Long id) throws Exception;
+    public Optional<House> findHouseById(String id);
 }
