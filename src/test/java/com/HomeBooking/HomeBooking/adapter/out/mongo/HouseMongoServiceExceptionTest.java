@@ -92,7 +92,7 @@ public class HouseMongoServiceExceptionTest {
                 () -> houseMongoService_with_mock.findHouseById("1")
         );
 
-        assertTrue(thrown.getMessage().contains("Technical error while retrieving house with id : 1"));
+        assertTrue(thrown.getMessage().contains("Technical error while retrieving house with id: 1"));
         assertTrue(thrown.getCause() instanceof  MongoException);
     }
 
