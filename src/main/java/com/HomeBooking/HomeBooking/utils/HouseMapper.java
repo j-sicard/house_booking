@@ -1,16 +1,16 @@
-package com.HomeBooking.HomeBooking.adapter.out.mongo.mapper;
+package com.HomeBooking.HomeBooking.utils;
 
-import com.HomeBooking.HomeBooking.adapter.out.mongo.document.HouseDocument;
-import com.HomeBooking.HomeBooking.domain.model.House;
+import com.HomeBooking.HomeBooking.model.HouseMO;
+import com.HomeBooking.HomeBooking.BO.HouseBO;
 
 public class HouseMapper {
 
     // *** For save ** //
 
-    public static HouseDocument toDocument(House house) {
+    public static HouseMO toDocument(HouseBO house) {
         if(house == null) return null;
 
-        HouseDocument doc = new HouseDocument();
+        HouseMO doc = new HouseMO();
         doc.setId(house.getId());
         doc.setAddress(house.getAddress());
         doc.setTitle(house.getTitle());
@@ -20,10 +20,10 @@ public class HouseMapper {
 
     // *** For read *** //
 
-    public static House toDomain(HouseDocument doc) {
+    public static HouseBO toDomain(HouseMO doc) {
         if (doc == null) return null;
 
-        House house = new House();
+        HouseBO house = new HouseBO();
         house.setId(doc.getId());
         house.setAddress(doc.getAddress());
         house.setTitle(doc.getTitle());

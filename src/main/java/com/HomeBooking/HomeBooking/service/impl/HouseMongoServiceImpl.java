@@ -1,10 +1,11 @@
-package com.HomeBooking.HomeBooking.adapter.out.mongo;
+package com.HomeBooking.HomeBooking.service.impl;
 
-import com.HomeBooking.HomeBooking.adapter.out.mongo.document.HouseDocument;
-import com.HomeBooking.HomeBooking.adapter.out.mongo.mapper.HouseMapper;
-import com.HomeBooking.HomeBooking.domain.exception.TechnicalDatabaseException;
-import com.HomeBooking.HomeBooking.domain.model.House;
-import com.HomeBooking.HomeBooking.domain.port.out.HouseRepositoryPort;
+import com.HomeBooking.HomeBooking.model.HouseMO;
+import com.HomeBooking.HomeBooking.service.HouseService;
+import com.HomeBooking.HomeBooking.utils.HouseMapper;
+import com.HomeBooking.HomeBooking.exceptions.dataexception.TechnicalDatabaseException;
+import com.HomeBooking.HomeBooking.BO.HouseBO;
+import com.HomeBooking.HomeBooking.repository.HouseMongoRepository;
 import com.mongodb.MongoException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,19 +16,19 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
-public class HouseMongoAdapter implements HouseRepositoryPort {
+public class HouseMongoServiceImpl implements HouseService {
 
     private final HouseMongoRepository mongoRepository;
 
-    public HouseMongoAdapter(HouseMongoRepository mongoRepository) {
+    public HouseMongoServiceImpl(HouseMongoRepository mongoRepository) {
         this.mongoRepository = mongoRepository;
     }
 
-    private static final Logger logger = LoggerFactory.getLogger(HouseMongoAdapter.class);
+    private static final Logger logger = LoggerFactory.getLogger(HouseMongoServiceImpl.class);
 
-    public House create(House house) {
+    public HouseBO create(HouseBO house) {
         try {
-            HouseDocument savedDoc = mongoRepository.save(HouseMapper.toDocument(house));
+            HouseMO savedDoc = mongoRepository.save(HouseMapper.toDocument(house));
 
             return HouseMapper.toDomain(savedDoc);
         } catch (MongoException e) {
@@ -36,11 +37,11 @@ public class HouseMongoAdapter implements HouseRepositoryPort {
         }
     }
 
-    public List<House> findHouses() {
+    public List<HouseBO> findHouses() {
         try {
-            List<HouseDocument> documents = mongoRepository.findAll();
+            List<HouseMO> documents = mongoRepository.findAll();
 
-            List<House> houses = documents.stream()
+            List<HouseBO> houses = documents.stream()
                     .map(HouseMapper::toDomain)
                     .collect(Collectors.toList());
             return houses;
@@ -61,7 +62,7 @@ public class HouseMongoAdapter implements HouseRepositoryPort {
      }
 
     @Override
-    public Optional<House> findHouseById(String id) {
+    public Optional<HouseBO> findHouseById(String id) {
         try {
             return mongoRepository.findById(id)
                     .map(HouseMapper::toDomain);

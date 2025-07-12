@@ -1,27 +1,16 @@
-package com.HomeBooking.HomeBooking.adapter.out.mongo.document;
+package com.HomeBooking.HomeBooking.BO;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+public class HouseBO {
 
-@Document(collection = "houses")
-public class HouseDocument {
-
-    @Id
     private String id;
-
-
     private String title;
-
-
     private String address;
-
-
     private Double price;
 
-    public HouseDocument() {
+    public HouseBO() {
     }
 
-    public HouseDocument(String id, String title, String address, Double price) {
+    public HouseBO(String id, String title, String address, Double price) {
         this.id = id;
         this.title = title;
         this.address = address;
@@ -70,4 +59,3 @@ public class HouseDocument {
                 '}';
     }
 }
-
