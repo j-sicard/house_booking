@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Repository
 public class HouseMongoServiceImpl implements HouseService {
@@ -37,18 +36,8 @@ public class HouseMongoServiceImpl implements HouseService {
         }
     }
 
-    public List<HouseBO> findHouses() {
-        try {
-            List<HouseMO> documents = mongoRepository.findAll();
-
-            List<HouseBO> houses = documents.stream()
-                    .map(HouseMapper::toDomain)
-                    .collect(Collectors.toList());
-            return houses;
-        } catch (MongoException e) {
-            logger.error("Error retrieving houses", e);
-            throw new TechnicalDatabaseException("Technical error while retrieving houses", e);
-        }
+    public List<HouseMO> findHouses() {
+            return mongoRepository.findAll();
     }
 
 
@@ -62,15 +51,8 @@ public class HouseMongoServiceImpl implements HouseService {
      }
 
     @Override
-    public Optional<HouseBO> findHouseById(String id) {
-        try {
-            return mongoRepository.findById(id)
-                    .map(HouseMapper::toDomain);
-        } catch (MongoException e) {
-            logger.error("Error retrieving house with id: {}", id, e);
-            throw new TechnicalDatabaseException(
-                    "Technical error while retrieving house with id: " + id, e);
-        }
+    public Optional<HouseMO> findHouseById(String id) {
+            return mongoRepository.findById(id);
     }
 
 }

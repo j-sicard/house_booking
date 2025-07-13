@@ -94,23 +94,23 @@ public class HouseMongoServiceTest {
     // *** findHouses *** //
 
     @Test
-    void shouldReturnAllHouses(){
+    void shouldReturnAllHouses()  throws Exception{
         assertEquals(3, houseMongoService.findHouses().size());
     }
 
     @Test
-    void shouldReturnHousesWithCorrectTitles() {
-        assertTrue(houseMongoService.findHouses().stream().map(HouseBO::getTitle).toList().containsAll(List.of("House 1", "House 2", "House 3")));
+    void shouldReturnHousesWithCorrectTitles(){
+        assertTrue(houseMongoService.findHouses().stream().map(HouseMO::getTitle).toList().containsAll(List.of("House 1", "House 2", "House 3")));
     }
 
     @Test
     void shouldReturnHousesWithCorrectAddress() {
-        assertTrue(houseMongoService.findHouses().stream().map(HouseBO::getAddress).toList().containsAll(List.of("address 1", "address 2", "address 3")));
+        assertTrue(houseMongoService.findHouses().stream().map(HouseMO::getAddress).toList().containsAll(List.of("address 1", "address 2", "address 3")));
     }
 
     @Test
     void shouldReturnHousesWithCorrectAdPrice() {
-        assertTrue(houseMongoService.findHouses().stream().map(HouseBO::getPrice).toList().containsAll(List.of(500.0, 600.0, 700.0)));
+        assertTrue(houseMongoService.findHouses().stream().map(HouseMO::getPrice).toList().containsAll(List.of(500.0, 600.0, 700.0)));
     }
 
     // *** deleteHouseById *** //
@@ -145,7 +145,7 @@ public class HouseMongoServiceTest {
 
     @Test
     void shouldReturnEmptyWhenHouseIdDoesNotExist() {
-        Optional<HouseBO> result = houseMongoService.findHouseById("99");
+        Optional<HouseMO> result = houseMongoService.findHouseById("99");
 
         assertTrue(result.isEmpty());
     }
