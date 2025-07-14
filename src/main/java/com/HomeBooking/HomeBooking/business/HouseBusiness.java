@@ -3,11 +3,14 @@ package com.HomeBooking.HomeBooking.business;
 import com.HomeBooking.HomeBooking.BO.HouseBO;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface HouseBusiness {
+
+    public HouseBO createHouse(HouseBO houseBO);
 
     public List<HouseBO> findHouse();
 
     public HouseBO findHouseById(String id);
+
+    public void deleteHouseById(String id);
 }

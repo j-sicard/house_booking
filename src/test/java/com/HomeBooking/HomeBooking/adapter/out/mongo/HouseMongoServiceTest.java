@@ -29,8 +29,8 @@ public class HouseMongoServiceTest {
     @Autowired
     private HouseMongoRepository houseMongoRepository;
 
-    public HouseBO houseForTest(){
-        HouseBO house = new HouseBO("1","House", "address here", 400.0);
+    public HouseMO houseForTest(){
+        HouseMO house = new HouseMO("1","House", "address here", 400.0);
         return house;
     }
 

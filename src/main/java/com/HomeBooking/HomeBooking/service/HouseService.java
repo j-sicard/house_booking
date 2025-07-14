@@ -8,11 +8,13 @@ import java.util.Optional;
 
 public interface HouseService {
 
-    public HouseBO create(HouseBO house);
+    public HouseMO create(HouseMO house);
 
     public List<HouseMO> findHouses();
 
     public void deleteHouseById(String id);
 
     public Optional<HouseMO> findHouseById(String id);
+
+    public Boolean houseExistedById(String id);
 }

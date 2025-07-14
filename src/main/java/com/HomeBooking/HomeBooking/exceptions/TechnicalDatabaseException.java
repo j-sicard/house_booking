@@ -1,4 +1,4 @@
-package com.HomeBooking.HomeBooking.exceptions.dataexception;
+package com.HomeBooking.HomeBooking.exceptions;
 
 public class TechnicalDatabaseException extends RuntimeException{
 

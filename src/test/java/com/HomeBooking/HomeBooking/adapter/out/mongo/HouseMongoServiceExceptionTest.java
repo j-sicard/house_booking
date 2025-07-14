@@ -1,7 +1,7 @@
 package com.HomeBooking.HomeBooking.adapter.out.mongo;
 
 import com.HomeBooking.HomeBooking.model.HouseMO;
-import com.HomeBooking.HomeBooking.exceptions.dataexception.TechnicalDatabaseException;
+import com.HomeBooking.HomeBooking.exceptions.TechnicalDatabaseException;
 import com.HomeBooking.HomeBooking.BO.HouseBO;
 import com.HomeBooking.HomeBooking.repository.HouseMongoRepository;
 import com.HomeBooking.HomeBooking.service.impl.HouseMongoServiceImpl;
@@ -32,7 +32,7 @@ public class HouseMongoServiceExceptionTest {
 
     @Test
     void shouldReturnExceptionWhenUseCreateHouseWhenDataBaseDisconnected() {
-        HouseBO house = new HouseBO("1", "Titre", "Adresse", 100.0);
+        HouseMO house = new HouseMO("1", "Titre", "Adresse", 100.0);
 
         when(houseMongoRepository_with_mock.save(any(HouseMO.class)))
                 .thenThrow(new MongoException("MongoDB down"));
