@@ -1,7 +1,6 @@
-package com.HomeBooking.HomeBooking.adapter.out.mongo;
+package com.HomeBooking.HomeBooking.service;
 
 import com.HomeBooking.HomeBooking.model.HouseMO;
-import com.HomeBooking.HomeBooking.BO.HouseBO;
 import com.HomeBooking.HomeBooking.repository.HouseMongoRepository;
 import com.HomeBooking.HomeBooking.service.impl.HouseMongoServiceImpl;
 import org.junit.jupiter.api.BeforeEach;

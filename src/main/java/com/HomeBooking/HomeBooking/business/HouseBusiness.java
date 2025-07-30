@@ -8,7 +8,8 @@ public interface HouseBusiness {
 
     public HouseBO createHouse(HouseBO houseBO);
 
-    public List<HouseBO> findHouse();
+    public List<HouseBO> findHouses
+            ();
 
     public HouseBO findHouseById(String id);
 
