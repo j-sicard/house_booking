@@ -3,7 +3,7 @@ package com.HomeBooking.HomeBooking.utils;
 import com.HomeBooking.HomeBooking.model.HouseMO;
 import com.HomeBooking.HomeBooking.BO.HouseBO;
 
-public class HouseMapper {
+public class HouseMongoMapper {
 
     // *** For save ** //
 
