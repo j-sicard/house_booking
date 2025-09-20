@@ -35,17 +35,8 @@ public class HouseController {
     @PostMapping(name = "/create")
     public ResponseEntity<?> createHouse(@RequestBody HouseFO house) {
         try {
-            // Step 1: Map the form object (FO) to business object (BO)
-            HouseBO houseBO = HouseFormMapper.toBusiness(house);
+            return ResponseManager.created(HouseDTOMapper.toDTO(houseBusiness.createHouse(HouseFormMapper.toBusiness(house))));
 
-            // Step 2: Create the house in the business layer
-            HouseBO createdHouse = houseBusiness.createHouse(houseBO);
-
-            // Step 3: Map the result to DTO
-            HouseDTO houseDTO = HouseDTOMapper.toDTO(createdHouse);
-
-            // Step 4: Return the created response
-            return ResponseManager.created(houseDTO);
         } catch (Exception e) {
             logger.error("Error creating house", e);
             return ResponseManager.error(
@@ -63,14 +54,8 @@ public class HouseController {
     @GetMapping("/find/all")
     public ResponseEntity<?> findHouses() {
         try {
-            // Step 1: Retrieve business objects
-            List<HouseBO> houses = houseBusiness.findHouses();
+            return ResponseManager.success(houseBusiness.findHouses().stream().map(HouseDTOMapper::toDTO).toList());
 
-            // Step 2: Map to DTOs
-            List<HouseDTO> houseDTOs = houses.stream().map(HouseDTOMapper::toDTO).toList();
-
-            // Step 3: Return response
-            return ResponseManager.success(houseDTOs);
         }catch (Exception e) {
             logger.error("Error retrieving houses", e);
             // Return an error response
@@ -78,17 +63,18 @@ public class HouseController {
         }
     }
 
+    /**
+     * This method is used to find a house by its id. It retrieves the business object, maps it to a DTO and returns a success response with the DTO.
+     * If an error occurs during this process, it logs the error and returns an error response.
+     *
+     * @param id The id of the house to be found.
+     * @return A ResponseEntity containing either a success or error response.
+     */
     @GetMapping("/find")
     public ResponseEntity<?> findHouseById(String id){
         try {
-            // step 1: Retrieve business objects
-            HouseBO house = houseBusiness.findHouseById(id);
+            return  ResponseManager.success(HouseDTOMapper.toDTO(houseBusiness.findHouseById(id)));
 
-            // Step 2: Map to DTO
-            HouseDTO houseDTO = HouseDTOMapper.toDTO(house);
-
-            // Step 3 response
-            return  ResponseManager.success(houseDTO);
         }catch (Exception e) {
             logger.error("Error retrieving house", e);
             // Return an error response
