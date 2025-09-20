@@ -1,7 +1,9 @@
 package com.HomeBooking.HomeBooking.controller;
 
+import com.HomeBooking.HomeBooking.FO.HouseFO;
 import com.HomeBooking.HomeBooking.model.HouseMO;
 import com.HomeBooking.HomeBooking.repository.HouseMongoRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -40,16 +43,44 @@ public class HouseControllerTests {
         houseMongoRepository.save(listHouseMOForTest().get(2));
     }
 
+    private HouseFO houseFoForTest(){
+        HouseFO house = new HouseFO();
+        house.setTitle("HouseTest");
+        house.setAddress("address Test");
+        house.setPrice(800.0);
+
+        return house;
+    }
+
+    @AfterEach
+    void tearDown() {
+        houseMongoRepository.deleteAll();
+    }
+
     @BeforeEach
     void cleanDatabase() {
         houseMongoRepository.deleteAll();
     }
 
+    // *** CreateHouseController
 
     @Test
-    void findHousesTest() {
-        houseController.findHouses();
+    void createHouse_shouldInsertOneHouseInDatabase() {
+        houseController.createHouse(houseFoForTest());
 
-        assertTrue(true);
+        assertThat(houseMongoRepository.findAll()).hasSize(1);
     }
+
+    @Test
+    void createHouse_shouldSaveCorrectHouseFields() {
+        houseController.createHouse(houseFoForTest());
+
+        assertThat(houseMongoRepository.findAll())
+                .extracting(HouseMO::getTitle, HouseMO::getAddress, HouseMO::getPrice)
+                .containsExactly(
+                        org.assertj.core.api.Assertions.tuple("HouseTest", "address Test", 800.0)
+                );
+    }
+
+
 }
