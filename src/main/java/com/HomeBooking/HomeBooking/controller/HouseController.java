@@ -60,7 +60,7 @@ public class HouseController {
      * Endpoint to retrieve all the houses
      * @return the list of houses
      */
-    @GetMapping("find/all")
+    @GetMapping("/find/all")
     public ResponseEntity<?> findHouses() {
         try {
             // Step 1: Retrieve business objects
@@ -75,6 +75,46 @@ public class HouseController {
             logger.error("Error retrieving houses", e);
             // Return an error response
             return ResponseManager.error(HttpStatus.INTERNAL_SERVER_ERROR, "Error retrieving houses : " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/find")
+    public ResponseEntity<?> findHouseById(String id){
+        try {
+            // step 1: Retrieve business objects
+            HouseBO house = houseBusiness.findHouseById(id);
+
+            // Step 2: Map to DTO
+            HouseDTO houseDTO = HouseDTOMapper.toDTO(house);
+
+            // Step 3 response
+            return  ResponseManager.success(houseDTO);
+        }catch (Exception e) {
+            logger.error("Error retrieving house", e);
+            // Return an error response
+            return ResponseManager.error(HttpStatus.INTERNAL_SERVER_ERROR, "Error retrieving house : " + e.getMessage());
+        }
+    }
+
+
+    /**
+     * Endpoint to delete a house by its id
+     * @param id the id of the house to delete
+     * @return a success message if the house was deleted successfully
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteHouse(@PathVariable String id) {
+        try  {
+            // Step 1: Delete the house in the business layer
+            houseBusiness.deleteHouseById(id);
+
+            // Step 2: Return a success response
+            return ResponseManager.success("House deleted successfully");
+        } catch (Exception e) {
+            logger.error("Error deleting house", e);
+
+            // Return an error response
+            return ResponseManager.error(HttpStatus.INTERNAL_SERVER_ERROR, "Error deleting house : " + e.getMessage());
         }
     }
 
