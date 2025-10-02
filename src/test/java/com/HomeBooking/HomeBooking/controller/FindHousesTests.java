@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Profile;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -18,12 +17,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.tuple;
+import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Profile("test")
 @ActiveProfiles("test")
-public class HouseControllerTests {
+public class FindHousesTests  {
 
     @Autowired
     HouseController houseController;
@@ -65,60 +66,45 @@ public class HouseControllerTests {
         houseMongoRepository.deleteAll();
     }
 
-    // *** CreateHouseController
+    // *** FindHouses *** //
 
     @Test
-    void createHouse_shouldInsertOneHouseInDatabase() {
-        houseController.createHouse(houseFoForTest());
+    void findHouses_shouldNotReturnNull(){
+        saveThreeHouses();
 
-        assertThat(houseMongoRepository.findAll()).hasSize(1);
+        assertNotNull( houseController.findHouses());
     }
 
     @Test
-    void createHouse_shouldSaveCorrectHouseFields() {
-        houseController.createHouse(houseFoForTest());
+    void findHouses_shouldReturnCorrectHousesSize(){
+        saveThreeHouses();
 
-        assertThat(houseMongoRepository.findAll())
-                .extracting(HouseMO::getTitle, HouseMO::getAddress, HouseMO::getPrice)
-                .containsExactly(
-                        org.assertj.core.api.Assertions.tuple("HouseTest", "address Test", 800.0)
+        ResponseEntity<?> response = houseController.findHouses();
+
+        @SuppressWarnings("unchecked")
+        List<HouseDTO> houses = (List<HouseDTO>) response.getBody();
+
+        assertEquals(3, houses.size());
+    }
+
+    @Test
+    void findHouses_shouldFindCorrectHousesFields() {
+        saveThreeHouses();
+
+        ResponseEntity<?> response = houseController.findHouses();
+
+        @SuppressWarnings("unchecked")
+        List<HouseDTO> houses = (List<HouseDTO>) response.getBody();
+
+        assertThat(houses)
+                .extracting(HouseDTO::getTitle, HouseDTO::getAddress, HouseDTO::getPrice)
+                .usingComparatorForType(String.CASE_INSENSITIVE_ORDER, String.class)
+                .containsExactlyInAnyOrder(
+                        tuple("House 1", "Address 1", 500.0),
+                        tuple("House 2", "Address 2", 600.0),
+                        tuple("House 3", "Address 3", 700.0)
                 );
-    }
 
-    @Test
-    void createHouse_shouldReturnNotNullResponse() {
-        ResponseEntity<?> response = houseController.createHouse(houseFoForTest());
-
-        assertNotNull(response);
-    }
-
-    @Test
-    void createHouse_shouldReturnCreatedStatus() {
-        ResponseEntity<?> response = houseController.createHouse(houseFoForTest());
-
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-    }
-
-    @Test
-    void createHouse_shouldReturnHouseDto() {
-        ResponseEntity<?> response = houseController.createHouse(houseFoForTest());
-
-        assertNotNull(response.getBody());
-        assertTrue(response.getBody() instanceof HouseDTO);
-    }
-
-
-    @Test
-    void createHouse_shouldReturnHouseDtoWithCorrectValues() {
-        ResponseEntity<?> response = houseController.createHouse(houseFoForTest());
-
-        assertNotNull(response.getBody());
-        assertTrue(response.getBody() instanceof HouseDTO);
-
-        HouseDTO houseDto = (HouseDTO) response.getBody();
-        assertEquals("HouseTest", houseDto.getTitle());
-        assertEquals("address Test", houseDto.getAddress());
-        assertEquals(800.0, houseDto.getPrice());
     }
 
 
