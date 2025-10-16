@@ -58,7 +58,7 @@ public class CreateHouseTests {
         houseMongoRepository.deleteAll();
     }
 
-    // *** CreateHouseController *** //
+    // *** CreateHouse *** //
 
     @Test
     void createHouse_shouldInsertOneHouseInDatabase() {

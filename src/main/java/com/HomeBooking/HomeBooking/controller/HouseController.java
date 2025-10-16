@@ -70,8 +70,8 @@ public class HouseController {
      * @param id The id of the house to be found.
      * @return A ResponseEntity containing either a success or error response.
      */
-    @GetMapping("/find")
-    public ResponseEntity<?> findHouseById(String id){
+    @GetMapping("/find/{id}")
+    public ResponseEntity<?> findHouseById(@PathVariable String id) {
         try {
             return  ResponseManager.success(HouseDTOMapper.toDTO(houseBusiness.findHouseById(id)));
 
@@ -88,21 +88,19 @@ public class HouseController {
      * @param id the id of the house to delete
      * @return a success message if the house was deleted successfully
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteHouse(@PathVariable String id) {
         try  {
-            // Step 1: Delete the house in the business layer
             houseBusiness.deleteHouseById(id);
 
-            // Step 2: Return a success response
             return ResponseManager.success("House deleted successfully");
         } catch (Exception e) {
             logger.error("Error deleting house", e);
 
-            // Return an error response
             return ResponseManager.error(HttpStatus.INTERNAL_SERVER_ERROR, "Error deleting house : " + e.getMessage());
         }
     }
+
 
 
 
