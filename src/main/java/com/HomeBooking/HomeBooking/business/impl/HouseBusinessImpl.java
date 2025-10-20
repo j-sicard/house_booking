@@ -78,18 +78,19 @@ public class HouseBusinessImpl implements HouseBusiness {
         HouseBO houseBO = houseBOOptional
                 .orElseThrow(() -> new HouseNotFoundException("House not found: " + houseFO.getId()));
 
-        if (!houseFO.getTitle().isEmpty()){
+        if (houseFO.getTitle() != null && !houseFO.getTitle().isEmpty()) {
             houseBO.setTitle(houseFO.getTitle());
         }
-        if (!houseFO.getAddress().isEmpty()){
+        if (houseFO.getAddress() != null && !houseFO.getAddress().isEmpty()) {
             houseBO.setAddress(houseFO.getAddress());
         }
-        if (houseFO.getPrice() != null){
+        if (houseFO.getPrice() != null) {
             houseBO.setPrice(houseFO.getPrice());
         }
 
         houseService.createHouse(houseBO);
     }
+
 
 
 }
