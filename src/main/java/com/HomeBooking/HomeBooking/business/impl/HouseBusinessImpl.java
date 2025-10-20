@@ -4,6 +4,7 @@ import com.HomeBooking.HomeBooking.BO.HouseBO;
 import com.HomeBooking.HomeBooking.business.HouseBusiness;
 import com.HomeBooking.HomeBooking.exceptions.HouseNotFoundException;
 import com.HomeBooking.HomeBooking.exceptions.TechnicalDatabaseException;
+import com.HomeBooking.HomeBooking.model.HouseMO;
 import com.HomeBooking.HomeBooking.service.HouseService;
 import com.HomeBooking.HomeBooking.utils.HouseMongoMapper;
 import com.HomeBooking.HomeBooking.utils.HouseValidator;
@@ -30,7 +31,7 @@ public class HouseBusinessImpl implements HouseBusiness {
     public HouseBO createHouse(HouseBO houseBO) {
         try {
             HouseValidator.validate(houseBO);
-            return HouseMongoMapper.toDomain(houseService.create(HouseMongoMapper.toDocument(houseBO)));
+            return houseService.createHouse(houseBO);
         }catch (MongoException e){
             logger.error("Error creating house", e);
             throw new TechnicalDatabaseException("Technical error while registering the house", e);
@@ -39,9 +40,7 @@ public class HouseBusinessImpl implements HouseBusiness {
 
     public List<HouseBO> findHouses(){
         try {
-            return  houseService.findHouses().stream()
-                    .map(HouseMongoMapper::toDomain)
-                    .collect(Collectors.toList());
+            return houseService.findHouses();
         } catch (MongoException e) {
             logger.error("Error retrieving houses", e);
             throw new TechnicalDatabaseException("Technical error while retrieving houses", e);
@@ -51,13 +50,13 @@ public class HouseBusinessImpl implements HouseBusiness {
     public HouseBO findHouseById(String id) {
         try {
             return houseService.findHouseById(id)
-                    .map(HouseMongoMapper::toDomain)
                     .orElseThrow(() -> new HouseNotFoundException("House not found: " + id));
         } catch (MongoException e) {
-            logger.error("Mongo error with id {}", id, e);
-            throw new TechnicalDatabaseException("Technical error", e);
+            logger.error("Technical error while retrieving house with id: " + id, e);
+            throw new TechnicalDatabaseException("Technical error while retrieving house with id: " + id, e);
         }
     }
+
 
     public void deleteHouseById(String id) {
         try {

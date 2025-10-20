@@ -34,9 +34,9 @@ public class FindHousesTests  {
 
     public List<HouseMO> listHouseMOForTest() {
         List<HouseMO> houses = new ArrayList<>();
-        houses.add(new HouseMO("1", "House 1", "address 1", 500.0));
-        houses.add(new HouseMO("2", "House 2", "address 2", 600.0));
-        houses.add(new HouseMO("3", "House 3", "address 3", 700.0));
+        houses.add(new HouseMO("1", "House 1", "Address 1", 500.0));
+        houses.add(new HouseMO("2", "House 2", "Address 2", 600.0));
+        houses.add(new HouseMO("3", "House 3", "Address 3", 700.0));
         return houses;
     }
 

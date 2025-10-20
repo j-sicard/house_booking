@@ -22,10 +22,6 @@ import static org.mockito.Mockito.any;
 @ExtendWith(MockitoExtension.class)
 public class HousebusinessExceptionTest {
 
-
-    @Mock
-    private HouseMongoRepository houseMongoRepository_with_mock;
-
     @Mock
     private HouseMongoServiceImpl houseMongoService_with_mock;
 
@@ -38,7 +34,7 @@ public class HousebusinessExceptionTest {
     void shouldReturnExceptionWhenUseCreateHouseWhenDataBaseDisconnected() {
         HouseBO house = new HouseBO("1", "Titre", "Adresse", 100.0);
 
-        when(houseMongoService_with_mock.create(any(HouseMO.class)))
+        when(houseMongoService_with_mock.createHouse(any(HouseBO.class)))
                 .thenThrow(new MongoException("MongoDB down"));
 
         TechnicalDatabaseException thrown = assertThrows(
@@ -71,33 +67,35 @@ public class HousebusinessExceptionTest {
 
     @Test
     void shouldReturnExceptionWhenUseDeleteHouseByIdWhenDataBaseDisconnected() {
+        when(houseMongoService_with_mock.houseExistedById("1")).thenReturn(true);
+
         doThrow(new MongoException("Mongo DB down"))
-                .when(houseMongoRepository_with_mock)
-                .deleteById("1");
+                .when(houseMongoService_with_mock)
+                .deleteHouseById("1");
 
         TechnicalDatabaseException thrown = assertThrows(
                 TechnicalDatabaseException.class,
-                () -> houseMongoService_with_mock.deleteHouseById("1")
+                () -> houseBusiness_with_mock.deleteHouseById("1")
         );
 
-        assertTrue(thrown.getMessage().contains("Technical error while deleting house"));
+        assertTrue(thrown.getMessage().contains("MongoDB Technical Error"));
         assertTrue(thrown.getCause() instanceof MongoException);
     }
 
     // *** findHouseById *** //
 
     @Test
-    void shouldReturnExceptionWhenUseFindHouseByIdWhenDataBaseDisconnected(){
-        when(houseMongoRepository_with_mock.findById("1")).thenThrow(new MongoException("Mongo DB down"));
-
+    void shouldReturnExceptionWhenUseFindHouseByIdWhenDataBaseDisconnected() {
+        when(houseMongoService_with_mock.findHouseById("1"))
+                .thenThrow(new MongoException("Mongo DB down"));
 
         TechnicalDatabaseException thrown = assertThrows(
                 TechnicalDatabaseException.class,
-                () -> houseMongoService_with_mock.findHouseById("1")
+                () -> houseBusiness_with_mock.findHouseById("1")
         );
 
         assertTrue(thrown.getMessage().contains("Technical error while retrieving house with id: 1"));
-        assertTrue(thrown.getCause() instanceof  MongoException);
+        assertTrue(thrown.getCause() instanceof MongoException);
     }
 
 }

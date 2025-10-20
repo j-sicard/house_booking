@@ -1,5 +1,6 @@
 package com.HomeBooking.HomeBooking.service;
 
+import com.HomeBooking.HomeBooking.BO.HouseBO;
 import com.HomeBooking.HomeBooking.model.HouseMO;
 import com.HomeBooking.HomeBooking.repository.HouseMongoRepository;
 import com.HomeBooking.HomeBooking.service.impl.HouseMongoServiceImpl;
@@ -30,6 +31,11 @@ public class HouseMongoServiceTest {
 
     public HouseMO houseForTest(){
         HouseMO house = new HouseMO("1","House", "address here", 400.0);
+        return house;
+    }
+
+    public HouseBO houseBOForTest(){
+        HouseBO house = new HouseBO("1","House", "address here", 400.0);
         return house;
     }
 
@@ -64,28 +70,28 @@ public class HouseMongoServiceTest {
     void shouldCreateHouseData(){
         int before = houseMongoRepository.findAll().size();
 
-        houseMongoService.create(houseForTest());
+        houseMongoService.createHouse(houseBOForTest());
 
         assertTrue(before +1 == houseMongoRepository.findAll().size());
     }
 
     @Test
     void shouldCreateHouseWithCorrectTitle(){
-        houseMongoService.create(houseForTest());
+        houseMongoService.createHouse(houseBOForTest());
 
         assertTrue(houseMongoRepository.findById("1").get().getTitle().equals("House"));
     }
 
     @Test
     void shouldCreateHouseWithCorrectAddress(){
-        houseMongoService.create(houseForTest());
+        houseMongoService.createHouse(houseBOForTest());
 
         assertTrue(houseMongoRepository.findById("1").get().getAddress().equals("address here"));
     }
 
     @Test
     void shouldCreateHouseWithCorrectPrice(){
-        houseMongoService.create(houseForTest());
+        houseMongoService.createHouse(houseBOForTest());
 
         assertTrue(houseMongoRepository.findById("1").get().getPrice().equals(400.0));
     }
@@ -99,17 +105,17 @@ public class HouseMongoServiceTest {
 
     @Test
     void shouldReturnHousesWithCorrectTitles(){
-        assertTrue(houseMongoService.findHouses().stream().map(HouseMO::getTitle).toList().containsAll(List.of("House 1", "House 2", "House 3")));
+        assertTrue(houseMongoService.findHouses().stream().map(HouseBO::getTitle).toList().containsAll(List.of("House 1", "House 2", "House 3")));
     }
 
     @Test
     void shouldReturnHousesWithCorrectAddress() {
-        assertTrue(houseMongoService.findHouses().stream().map(HouseMO::getAddress).toList().containsAll(List.of("address 1", "address 2", "address 3")));
+        assertTrue(houseMongoService.findHouses().stream().map(HouseBO::getAddress).toList().containsAll(List.of("address 1", "address 2", "address 3")));
     }
 
     @Test
     void shouldReturnHousesWithCorrectAdPrice() {
-        assertTrue(houseMongoService.findHouses().stream().map(HouseMO::getPrice).toList().containsAll(List.of(500.0, 600.0, 700.0)));
+        assertTrue(houseMongoService.findHouses().stream().map(HouseBO::getPrice).toList().containsAll(List.of(500.0, 600.0, 700.0)));
     }
 
     // *** deleteHouseById *** //
@@ -144,7 +150,7 @@ public class HouseMongoServiceTest {
 
     @Test
     void shouldReturnEmptyWhenHouseIdDoesNotExist() {
-        Optional<HouseMO> result = houseMongoService.findHouseById("99");
+        Optional<HouseBO> result = houseMongoService.findHouseById("99");
 
         assertTrue(result.isEmpty());
     }
