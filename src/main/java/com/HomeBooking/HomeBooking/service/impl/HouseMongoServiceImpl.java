@@ -45,9 +45,7 @@ public class HouseMongoServiceImpl implements HouseService {
                 .map(HouseMongoMapper::toDomain);
     }
 
-
     public Boolean houseExistedById(String id){
         return mongoRepository.existsById(id);
     }
-
 }

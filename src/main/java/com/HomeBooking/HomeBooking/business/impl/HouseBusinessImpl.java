@@ -1,6 +1,7 @@
 package com.HomeBooking.HomeBooking.business.impl;
 
 import com.HomeBooking.HomeBooking.BO.HouseBO;
+import com.HomeBooking.HomeBooking.FO.HouseFO;
 import com.HomeBooking.HomeBooking.business.HouseBusiness;
 import com.HomeBooking.HomeBooking.exceptions.HouseNotFoundException;
 import com.HomeBooking.HomeBooking.exceptions.TechnicalDatabaseException;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -69,5 +71,25 @@ public class HouseBusinessImpl implements HouseBusiness {
             throw new TechnicalDatabaseException("MongoDB Technical Error", e);
         }
     }
+
+    public void updateHouse(HouseFO houseFO) {
+        Optional<HouseBO> houseBOOptional = houseService.findHouseById(houseFO.getId());
+
+        HouseBO houseBO = houseBOOptional
+                .orElseThrow(() -> new HouseNotFoundException("House not found: " + houseFO.getId()));
+
+        if (!houseFO.getTitle().isEmpty()){
+            houseBO.setTitle(houseFO.getTitle());
+        }
+        if (!houseFO.getAddress().isEmpty()){
+            houseBO.setAddress(houseFO.getAddress());
+        }
+        if (houseFO.getPrice() != null){
+            houseBO.setPrice(houseFO.getPrice());
+        }
+
+        houseService.createHouse(houseBO);
+    }
+
 
 }
