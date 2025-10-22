@@ -1,10 +1,11 @@
 package com.HomeBooking.HomeBooking.service.impl;
 
 import com.HomeBooking.HomeBooking.BO.HouseBO;
+import com.HomeBooking.HomeBooking.exceptions.HouseNotFoundException;
 import com.HomeBooking.HomeBooking.model.HouseMO;
 import com.HomeBooking.HomeBooking.service.HouseService;
 import com.HomeBooking.HomeBooking.repository.HouseMongoRepository;
-import com.HomeBooking.HomeBooking.utils.HouseMongoMapper;
+import com.HomeBooking.HomeBooking.Mapper.HouseMongoMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -48,4 +49,14 @@ public class HouseMongoServiceImpl implements HouseService {
     public Boolean houseExistedById(String id){
         return mongoRepository.existsById(id);
     }
+
+    public void updateHouse(HouseBO originalHouse, HouseBO udateHouse) {
+
+        originalHouse.setTitle(udateHouse.getTitle());
+        originalHouse.setAddress(udateHouse.getAddress());
+        originalHouse.setPrice(udateHouse.getPrice());
+
+        mongoRepository.save(HouseMongoMapper.toDocument(originalHouse));
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.HomeBooking.HomeBooking.utils;
+package com.HomeBooking.HomeBooking.Mapper;
 
 import com.HomeBooking.HomeBooking.model.HouseMO;
 import com.HomeBooking.HomeBooking.BO.HouseBO;

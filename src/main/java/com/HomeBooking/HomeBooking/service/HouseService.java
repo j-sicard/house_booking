@@ -17,4 +17,6 @@ public interface HouseService {
     public Optional<HouseBO> findHouseById(String id);
 
     public Boolean houseExistedById(String id);
+
+    public void updateHouse(HouseBO originalHouse, HouseBO udateHouse);
 }

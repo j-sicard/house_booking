@@ -2,13 +2,15 @@ package com.HomeBooking.HomeBooking.business.impl;
 
 import com.HomeBooking.HomeBooking.BO.HouseBO;
 import com.HomeBooking.HomeBooking.FO.HouseFO;
+import com.HomeBooking.HomeBooking.Mapper.HouseFormMapper;
+import com.HomeBooking.HomeBooking.Mapper.HouseMongoMapper;
 import com.HomeBooking.HomeBooking.business.HouseBusiness;
 import com.HomeBooking.HomeBooking.exceptions.HouseNotFoundException;
+import com.HomeBooking.HomeBooking.exceptions.InvalidHouseException;
 import com.HomeBooking.HomeBooking.exceptions.TechnicalDatabaseException;
 import com.HomeBooking.HomeBooking.model.HouseMO;
 import com.HomeBooking.HomeBooking.service.HouseService;
-import com.HomeBooking.HomeBooking.utils.HouseMongoMapper;
-import com.HomeBooking.HomeBooking.utils.HouseValidator;
+import com.HomeBooking.HomeBooking.Mapper.HouseValidator;
 import com.mongodb.MongoException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class HouseBusinessImpl implements HouseBusiness {
@@ -74,22 +75,23 @@ public class HouseBusinessImpl implements HouseBusiness {
 
     public void updateHouse(HouseFO houseFO) {
         Optional<HouseBO> houseBOOptional = houseService.findHouseById(houseFO.getId());
-
-        HouseBO houseBO = houseBOOptional
+        HouseBO existingHouse = houseBOOptional
                 .orElseThrow(() -> new HouseNotFoundException("House not found: " + houseFO.getId()));
 
-        if (houseFO.getTitle() != null && !houseFO.getTitle().isEmpty()) {
-            houseBO.setTitle(houseFO.getTitle());
-        }
-        if (houseFO.getAddress() != null && !houseFO.getAddress().isEmpty()) {
-            houseBO.setAddress(houseFO.getAddress());
-        }
-        if (houseFO.getPrice() != null) {
-            houseBO.setPrice(houseFO.getPrice());
-        }
+        try {
+            HouseBO updatedHouse = HouseFormMapper.toBusiness(houseFO);
 
-        houseService.createHouse(houseBO);
+            HouseValidator.validate(updatedHouse);
+
+            houseService.updateHouse(existingHouse, updatedHouse);
+
+        } catch (InvalidHouseException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new TechnicalDatabaseException("An unexpected error occurred while updating the house: " + e.getMessage());
+        }
     }
+
 
 
 

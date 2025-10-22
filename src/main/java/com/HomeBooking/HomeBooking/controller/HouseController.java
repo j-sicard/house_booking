@@ -1,19 +1,15 @@
 package com.HomeBooking.HomeBooking.controller;
 
-import com.HomeBooking.HomeBooking.BO.HouseBO;
-import com.HomeBooking.HomeBooking.DTO.HouseDTO;
 import com.HomeBooking.HomeBooking.FO.HouseFO;
 import com.HomeBooking.HomeBooking.business.HouseBusiness;
-import com.HomeBooking.HomeBooking.utils.HouseDTOMapper;
-import com.HomeBooking.HomeBooking.utils.HouseFormMapper;
-import com.HomeBooking.HomeBooking.utils.ResponseManager;
+import com.HomeBooking.HomeBooking.Mapper.HouseDTOMapper;
+import com.HomeBooking.HomeBooking.Mapper.HouseFormMapper;
+import com.HomeBooking.HomeBooking.Mapper.ResponseManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/House")
