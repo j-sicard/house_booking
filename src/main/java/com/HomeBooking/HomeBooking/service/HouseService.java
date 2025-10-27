@@ -1,14 +1,13 @@
 package com.HomeBooking.HomeBooking.service;
 
 import com.HomeBooking.HomeBooking.BO.HouseBO;
-import com.HomeBooking.HomeBooking.model.HouseMO;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface HouseService {
 
-    public HouseBO createHouse(HouseBO house);
+    public HouseBO saveHouse(HouseBO house);
 
     public List<HouseBO> findHouses();
 
@@ -18,5 +17,4 @@ public interface HouseService {
 
     public Boolean houseExistedById(String id);
 
-    public void updateHouse(HouseBO originalHouse, HouseBO udateHouse);
 }

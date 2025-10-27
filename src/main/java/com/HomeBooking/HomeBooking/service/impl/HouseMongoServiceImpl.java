@@ -24,7 +24,7 @@ public class HouseMongoServiceImpl implements HouseService {
         this.mongoRepository = mongoRepository;
     }
 
-    public HouseBO createHouse(HouseBO house) {
+    public HouseBO saveHouse(HouseBO house) {
             return HouseMongoMapper.toDomain(mongoRepository.save(HouseMongoMapper.toDocument(house))) ;
     }
 
@@ -50,13 +50,5 @@ public class HouseMongoServiceImpl implements HouseService {
         return mongoRepository.existsById(id);
     }
 
-    public void updateHouse(HouseBO originalHouse, HouseBO udateHouse) {
-
-        originalHouse.setTitle(udateHouse.getTitle());
-        originalHouse.setAddress(udateHouse.getAddress());
-        originalHouse.setPrice(udateHouse.getPrice());
-
-        mongoRepository.save(HouseMongoMapper.toDocument(originalHouse));
-    }
 
 }

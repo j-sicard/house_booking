@@ -70,28 +70,28 @@ public class HouseMongoServiceTest {
     void shouldCreateHouseData(){
         int before = houseMongoRepository.findAll().size();
 
-        houseMongoService.createHouse(houseBOForTest());
+        houseMongoService.saveHouse(houseBOForTest());
 
         assertTrue(before +1 == houseMongoRepository.findAll().size());
     }
 
     @Test
     void shouldCreateHouseWithCorrectTitle(){
-        houseMongoService.createHouse(houseBOForTest());
+        houseMongoService.saveHouse(houseBOForTest());
 
         assertTrue(houseMongoRepository.findById("1").get().getTitle().equals("House"));
     }
 
     @Test
     void shouldCreateHouseWithCorrectAddress(){
-        houseMongoService.createHouse(houseBOForTest());
+        houseMongoService.saveHouse(houseBOForTest());
 
         assertTrue(houseMongoRepository.findById("1").get().getAddress().equals("address here"));
     }
 
     @Test
     void shouldCreateHouseWithCorrectPrice(){
-        houseMongoService.createHouse(houseBOForTest());
+        houseMongoService.saveHouse(houseBOForTest());
 
         assertTrue(houseMongoRepository.findById("1").get().getPrice().equals(400.0));
     }

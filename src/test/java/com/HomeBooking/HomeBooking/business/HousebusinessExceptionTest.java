@@ -2,9 +2,7 @@ package com.HomeBooking.HomeBooking.business;
 
 import com.HomeBooking.HomeBooking.BO.HouseBO;
 import com.HomeBooking.HomeBooking.business.impl.HouseBusinessImpl;
-import com.HomeBooking.HomeBooking.model.HouseMO;
 import com.HomeBooking.HomeBooking.exceptions.TechnicalDatabaseException;
-import com.HomeBooking.HomeBooking.repository.HouseMongoRepository;
 import com.HomeBooking.HomeBooking.service.impl.HouseMongoServiceImpl;
 import com.mongodb.MongoException;
 import org.junit.jupiter.api.Test;
@@ -34,7 +32,7 @@ public class HousebusinessExceptionTest {
     void shouldReturnExceptionWhenUseCreateHouseWhenDataBaseDisconnected() {
         HouseBO house = new HouseBO("1", "Titre", "Adresse", 100.0);
 
-        when(houseMongoService_with_mock.createHouse(any(HouseBO.class)))
+        when(houseMongoService_with_mock.saveHouse(any(HouseBO.class)))
                 .thenThrow(new MongoException("MongoDB down"));
 
         TechnicalDatabaseException thrown = assertThrows(
