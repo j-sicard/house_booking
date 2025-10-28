@@ -2,14 +2,14 @@ package com.HomeBooking.HomeBooking.business.impl;
 
 import com.HomeBooking.HomeBooking.BO.HouseBO;
 import com.HomeBooking.HomeBooking.FO.HouseFO;
-import com.HomeBooking.HomeBooking.Mapper.HouseFormMapper;
+import com.HomeBooking.HomeBooking.mapper.HouseFormMapper;
 import com.HomeBooking.HomeBooking.business.HouseBusiness;
 import com.HomeBooking.HomeBooking.exceptions.HouseNotFoundException;
 import com.HomeBooking.HomeBooking.exceptions.InvalidHouseException;
 import com.HomeBooking.HomeBooking.exceptions.TechnicalDatabaseException;
 import com.HomeBooking.HomeBooking.service.HouseService;
-import com.HomeBooking.HomeBooking.Mapper.HouseValidator;
-import com.HomeBooking.HomeBooking.Mapper.HouseUpdate;
+import com.HomeBooking.HomeBooking.mapper.HouseValidator;
+import com.HomeBooking.HomeBooking.mapper.HouseUpdate;
 import com.mongodb.MongoException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

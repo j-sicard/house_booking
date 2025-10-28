@@ -1,4 +1,4 @@
-package com.HomeBooking.HomeBooking.Mapper;
+package com.HomeBooking.HomeBooking.mapper;
 
 import com.HomeBooking.HomeBooking.response.ApiErrorResponse;
 import org.springframework.http.HttpStatus;

@@ -1,11 +1,9 @@
 package com.HomeBooking.HomeBooking.service.impl;
 
 import com.HomeBooking.HomeBooking.BO.HouseBO;
-import com.HomeBooking.HomeBooking.exceptions.HouseNotFoundException;
-import com.HomeBooking.HomeBooking.model.HouseMO;
 import com.HomeBooking.HomeBooking.service.HouseService;
 import com.HomeBooking.HomeBooking.repository.HouseMongoRepository;
-import com.HomeBooking.HomeBooking.Mapper.HouseMongoMapper;
+import com.HomeBooking.HomeBooking.mapper.HouseMongoMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
