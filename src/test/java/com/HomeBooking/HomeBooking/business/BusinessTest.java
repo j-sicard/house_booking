@@ -4,6 +4,7 @@ import com.HomeBooking.HomeBooking.BO.HouseBO;
 import com.HomeBooking.HomeBooking.business.impl.HouseBusinessImpl;
 import com.HomeBooking.HomeBooking.exceptions.HouseNotFoundException;
 import com.HomeBooking.HomeBooking.exceptions.InvalidHouseException;
+import com.HomeBooking.HomeBooking.mapper.HouseMongoMapper;
 import com.HomeBooking.HomeBooking.model.HouseMO;
 import com.HomeBooking.HomeBooking.repository.HouseMongoRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,6 +29,14 @@ public class BusinessTest {
 
     @Autowired
     HouseMongoRepository houseMongoRepository;
+
+    private HouseMO houseMoForTest(){
+        HouseMO house = new HouseMO();
+        house.setTitle("HouseTest");
+        house.setAddress("house address for test");
+        house.setPrice(500.0);
+        return house;
+    }
 
     public List<HouseMO> listHouseMOForTest() {
         List<HouseMO> houses = new ArrayList<>();
@@ -219,4 +228,19 @@ public class BusinessTest {
         assertEquals(500.0, houseBusiness.findHouseById("1").getPrice());
     }
 
+
+    // *** updateHouse ** //
+
+    @Test
+    void updateHouseTest(){
+        HouseMO house = houseMoForTest();
+
+        houseMongoRepository.save(house);
+
+        house.setTitle("House updated");
+
+        houseBusiness.updateHouse(HouseMongoMapper.toDomain(house));
+
+        assertEquals(houseMongoRepository.findById(house.getId()).get().getTitle(), "House updated");
+    }
 }

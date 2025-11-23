@@ -93,9 +93,24 @@ public class HouseController {
         } catch (Exception e) {
             logger.error("Error deleting house", e);
 
-            return ResponseManager.error(HttpStatus.INTERNAL_SERVER_ERROR, "Error deleting house : " + e.getMessage());
+            return ResponseManager.error(HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Error deleting house : " + e.getMessage());
         }
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> updateHouse(@RequestBody HouseFO house){
+        try {
+            houseBusiness.updateHouse(HouseFormMapper.toBusiness(house));
+            return ResponseManager.success("House updated successfully");
+        }catch (Exception e){
+            logger.error("Error updating house", e);
+             return ResponseManager.error(HttpStatus.INTERNAL_SERVER_ERROR,
+                     "Error updated house : " + e.getMessage());
+        }
+
+    }
+
 
 
 

@@ -71,12 +71,12 @@ public class HouseBusinessImpl implements HouseBusiness {
         }
     }
 
-    public void updateHouse(HouseFO houseFO) {
-        HouseBO existingHouse = houseService.findHouseById(houseFO.getId())
-                .orElseThrow(() -> new HouseNotFoundException("House not found: " + houseFO.getId()));
+    public void updateHouse(HouseBO houseBO) {
+        HouseBO existingHouse = houseService.findHouseById(houseBO.getId())
+                .orElseThrow(() -> new HouseNotFoundException("House not found: " + houseBO.getId()));
 
         try {
-            HouseValidator.validate(HouseUpdate.updateHouseBO(existingHouse, HouseFormMapper.toBusiness(houseFO)));
+            HouseValidator.validate(HouseUpdate.updateHouseBO(existingHouse, houseBO));
 
             houseService.saveHouse(existingHouse);
 
@@ -85,8 +85,10 @@ public class HouseBusinessImpl implements HouseBusiness {
         } catch (Exception e) {
             throw new TechnicalDatabaseException("Error while updating house: " + e.getMessage(), e);
         }
+
     }
 }
+
 
 
 

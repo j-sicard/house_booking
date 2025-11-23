@@ -16,5 +16,5 @@ public interface HouseBusiness {
 
     public void deleteHouseById(String id);
 
-    public void updateHouse(HouseFO houseFO);
+    public void updateHouse(HouseBO houseBO);
 }
