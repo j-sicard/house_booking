@@ -76,17 +76,24 @@ public class HouseBusinessImpl implements HouseBusiness {
                 .orElseThrow(() -> new HouseNotFoundException("House not found: " + houseBO.getId()));
 
         try {
-            HouseValidator.validate(HouseUpdate.updateHouseBO(existingHouse, houseBO));
+            HouseBO updatedHouse = HouseUpdate.updateHouseBO(existingHouse, houseBO);
+            HouseValidator.validate(updatedHouse);
 
-            houseService.saveHouse(existingHouse);
+            houseService.saveHouse(updatedHouse);
 
         } catch (InvalidHouseException e) {
             throw e;
+
+        } catch (MongoException e) {
+            logger.error("Mongo error while updating house", e);
+            throw new TechnicalDatabaseException("MongoDB Technical Error while updating", e);
+
         } catch (Exception e) {
+            logger.error("Technical error while updating house", e);
             throw new TechnicalDatabaseException("Error while updating house: " + e.getMessage(), e);
         }
-
     }
+
 }
 
 

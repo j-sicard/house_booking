@@ -245,7 +245,7 @@ public class BusinessTest {
     }
 
     @Test
-    void shouldIfReturnErrorMessageWhenWEReturnBadObject(){
+    void shouldThrowWhenUpdatingNonExistingHouse(){
         HouseBO house = houseBOForTest();
         house.setId("1L");
         HouseNotFoundException thrown = assertThrows(

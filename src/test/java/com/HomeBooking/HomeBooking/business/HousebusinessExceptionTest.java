@@ -11,6 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doThrow;
@@ -95,5 +97,30 @@ public class HousebusinessExceptionTest {
         assertTrue(thrown.getMessage().contains("Technical error while retrieving house with id: 1"));
         assertTrue(thrown.getCause() instanceof MongoException);
     }
+
+
+    // *** updateHouse *** //
+
+    @Test
+    void shouldThrowTechnicalDatabaseExceptionWhenMongoExceptionOccursDuringUpdate() {
+        // GIVEN
+        HouseBO house = new HouseBO("1", "Titre", "Adresse", 100.0);
+        when(houseMongoService_with_mock.findHouseById(house.getId()))
+                .thenReturn(Optional.of(house));
+
+        // Simuler l'erreur MongoDB
+        doThrow(new MongoException("Mongo error"))
+                .when(houseMongoService_with_mock)
+                .saveHouse(any(HouseBO.class));
+
+        // WHEN + THEN
+        TechnicalDatabaseException thrown = assertThrows(
+                TechnicalDatabaseException.class,
+                () -> houseBusiness_with_mock.updateHouse(house)
+        );
+
+        assertTrue(thrown.getMessage().contains("MongoDB Technical Error"));
+    }
+
 
 }
