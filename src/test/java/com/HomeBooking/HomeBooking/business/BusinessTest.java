@@ -232,7 +232,7 @@ public class BusinessTest {
     // *** updateHouse ** //
 
     @Test
-    void updateHouseTest(){
+    void shouldUpdateHouseSuccessfully(){
         HouseMO house = houseMoForTest();
 
         houseMongoRepository.save(house);
@@ -243,4 +243,18 @@ public class BusinessTest {
 
         assertEquals(houseMongoRepository.findById(house.getId()).get().getTitle(), "House updated");
     }
+
+    @Test
+    void shouldIfReturnErrorMessageWhenWEReturnBadObject(){
+        HouseBO house = houseBOForTest();
+        house.setId("1L");
+        HouseNotFoundException thrown = assertThrows(
+                HouseNotFoundException.class,
+                () -> houseBusiness.updateHouse(house)
+        );
+
+        assertTrue(thrown.getMessage().contains("House not found: " + house.getId()));
+    }
+
+
 }
